@@ -7,6 +7,7 @@ import inquirer from "inquirer";
 let myBalance = 10000; //Dollar
 let myPin = 2266;
 
+
 // Print welcome message
 console.log("Welcome to Code with Javeria - ATM Machine");
 
@@ -29,38 +30,56 @@ if (pinAnswer.pin === myPin) {
                 name:"operation",
                 message:"please select option",
                 type:"list",
-                choices: ["withdraw", "check balance"]
+                choices: ["withdraw", "fastcash" ,"check balance"],
             }
         ]
     );
     console.log(operationAns);
-
+   
     if (operationAns.operation === "withdraw") {
-        let amountAns = await inquirer.prompt(
-            [
-                {
-                    name: "amount",
-                    message: "enter your amount",
-                    type: "number"
-                }
-            ]
-        );
-if(amountAns.amount > myBalance){
-    console.log("Insufficient Balance");
-}
-
-
-
-// =, -=, +=
-        myBalance -= amountAns.amount;
-
-        console.log("your remaining balance is: " + myBalance)
+        let amountAns = await inquirer.prompt([
+            {
+                name: "amount",
+                type: "number",
+                message: "Enter your amount:",
+            }
+        ])
+        if(amountAns.amount > myBalance){
+            console.log("Insufficient Balance");
+        }
        
-    } else if(operationAns.operation === "check balance") {
-        console.log("your balance is: " + myBalance)
+        
+    // =, -=, += :Assignment operators
+else {
+    let amountLeft = myBalance - amountAns.amount;
+    console.log(`The Remaining balance is : ${amountLeft}`);
+    console.log("Thank You!");
+}
+    }
+else if(operationAns.operation === "fastcash") {
+    let fastcashAmountAns = await inquirer.prompt([
+        {
+          name: "fastcashAmount",
+          type: "list",
+          message: "Select one option:",
+          choices: ["2000" , "4500" , "8000" , "3600"]      
+        }
+    ]);
+    if(myBalance - fastcashAmountAns.fastcashAmount){
+        let leftAmount = myBalance - fastcashAmountAns.fastcashAmount
+        console.log(`The remaining balance is ${leftAmount}`)
+        console.log("Thank You!");
+    }
+    else {fastcashAmountAns.fastcashAmount > myBalance
+        console.log(`Insufficient Amount!`);
     }
 }
 
-else {
-    console.log("Incorrect pin number");
+
+else if (operationAns.operation === "check balance") {
+    console.log(`Your balance is:   ${myBalance}`);
+};
 }
+else {
+    console.log("Incorrect Pin");
+};
